@@ -6,9 +6,9 @@
     <title>Examen de Inteligencia Artificial</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,100 +19,143 @@
         }
 
         .container {
-            background: #fff;
-            padding: 20px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            background: #ffffff;
+            padding: 32px 48px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
             width: 100%;
             text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         header h1 {
-            color: #444;
-            margin-bottom: 20px;
-        }
-
-        #user-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        #user-form input {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        #user-form button, #download-score {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        #user-form button:hover, #download-score:hover {
-            background-color: #0056b3;
+            color: #1a202c;
+            margin-bottom: 24px;
+            font-size: 2.25rem;
+            font-weight: 700;
         }
 
         .hidden {
             display: none;
         }
 
+        #user-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        #user-form label {
+            text-align: left;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        #user-form input {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        #user-form input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
         #question-area {
             text-align: left;
+        }
+
+        #question-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 24px;
         }
 
         #options-container {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 24px;
         }
 
         .option {
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 16px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s, border-color 0.3s;
+            text-align: left;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.1s;
         }
 
         .option:hover {
-            background-color: #f0f0f0;
+            background-color: #f7fafc;
+            border-color: #a0aec0;
+            transform: translateY(-2px);
         }
 
         .option.correct {
-            background-color: #28a745;
+            background-color: #48bb78;
             color: white;
-            border-color: #28a745;
+            border-color: #48bb78;
         }
 
         .option.incorrect {
-            background-color: #dc3545;
+            background-color: #f56565;
             color: white;
-            border-color: #dc3545;
+            border-color: #f56565;
         }
 
         #timer {
-            font-size: 18px;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 16px;
         }
 
         .result-box {
             text-align: left;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background-color: #f7fafc;
+        }
+
+        .result-box p {
+            font-size: 1.125rem;
+            color: #4a5568;
+            margin: 8px 0;
+        }
+        
+        .result-box p span {
+            font-weight: 600;
+            color: #2d3748;
         }
     </style>
 </head>
@@ -154,20 +197,49 @@
     </div>
 
     <script>
-        // Array de preguntas y sus respuestas correctas
         const allQuestions = [
-            { question: '¿Qué es la Inteligencia Artificial (IA)?', options: ['La capacidad de un sistema para realizar tareas que requieren inteligencia humana.', 'Un campo de la computación que se enfoca en el desarrollo de software de código abierto.', 'El estudio de cómo los humanos interactúan con las computadoras.', 'La rama de la robótica que se centra en el diseño de robots humanoides.'], correctAnswer: 'La capacidad de un sistema para realizar tareas que requieren inteligencia humana.' },
-            { question: '¿Cuál es el objetivo principal de la IA?', options: ['Crear computadoras que piensen y actúen como humanos.', 'Automatizar procesos industriales para eliminar la mano de obra.', 'Mejorar la velocidad de los procesadores.', 'Desarrollar sistemas de entretenimiento más realistas.'], correctAnswer: 'Crear computadoras que piensen y actúen como humanos.' },
-            { question: '¿Qué diferencia hay entre IA fuerte y débil?', options: ['La IA fuerte es más avanzada que la débil.', 'La IA débil se enfoca en tareas específicas, mientras que la fuerte tiene capacidades cognitivas generales.', 'La IA fuerte es un mito, la débil es la que existe actualmente.', 'La IA débil se basa en software y la fuerte en hardware.'], correctAnswer: 'La IA débil se enfoca en tareas específicas, mientras que la fuerte tiene capacidades cognitivas generales.' },
-            { question: '¿Qué es el Aprendizaje Automático (Machine Learning)?', options: ['Un tipo de inteligencia artificial que permite a las máquinas aprender de los datos sin ser programadas explícitamente.', 'Un software que permite la creación de videojuegos de alta calidad.', 'Un proceso de la robótica para ensamblar piezas de forma eficiente.', 'Una técnica de programación que utiliza el lenguaje C++.'], correctAnswer: 'Un tipo de inteligencia artificial que permite a las máquinas aprender de los datos sin ser programadas explícitamente.' },
-            { question: '¿Qué es el Deep Learning (Aprendizaje Profundo)?', options: ['Un subcampo del Machine Learning que se enfoca en el desarrollo de modelos que imitan la forma en que el cerebro humano procesa la información.', 'Una técnica de ciberseguridad para proteger datos sensibles.', 'Un método de programación que utiliza algoritmos muy complejos.', 'La programación de robots que pueden moverse en aguas profundas.'], correctAnswer: 'Un subcampo del Machine Learning que se enfoca en el desarrollo de modelos que imitan la forma en que el cerebro humano procesa la información.' },
-            { question: '¿Qué es una red neuronal artificial?', options: ['Un sistema informático que se basa en la estructura del cerebro humano para procesar información.', 'Una red de computadoras interconectadas para compartir datos.', 'Una técnica de inteligencia artificial que se utiliza para la creación de bases de datos.', 'Un tipo de software para el diseño gráfico.'], correctAnswer: 'Un sistema informático que se basa en la estructura del cerebro humano para procesar información.' },
-            { question: '¿Qué es el Procesamiento del Lenguaje Natural (NLP)?', options: ['Un método para la creación de programas que pueden traducir idiomas de forma instantánea.', 'La capacidad de una máquina para entender, interpretar y generar lenguaje humano.', 'Una técnica de programación para el diseño de interfaces de usuario.', 'El estudio de la forma en que el lenguaje se desarrolla en los niños.'], correctAnswer: 'La capacidad de una máquina para entender, interpretar y generar lenguaje humano.' },
-            { question: '¿Cuál de los siguientes no es un tipo de aprendizaje automático?', options: ['Aprendizaje supervisado.', 'Aprendizaje no supervisado.', 'Aprendizaje por refuerzo.', 'Aprendizaje sensorial.'], correctAnswer: 'Aprendizaje sensorial.' },
-            { question: '¿Qué es el reconocimiento de imágenes?', options: ['Una técnica de IA que permite a las computadoras identificar y clasificar objetos en imágenes y videos.', 'Un software para la edición de fotografías.', 'El proceso de crear imágenes a partir de datos.', 'Una herramienta para la creación de animaciones.'], correctAnswer: 'Una técnica de IA que permite a las computadoras identificar y clasificar objetos en imágenes y videos.' },
-            { question: '¿Qué es la robótica?', options: ['El campo de la ingeniería que se enfoca en la creación de máquinas autónomas.', 'El estudio de la historia de los robots.', 'Un tipo de inteligencia artificial que solo se usa en fábricas.', 'La programación de robots para jugar ajedrez.'], correctAnswer: 'El campo de la ingeniería que se enfoca en la creación de máquinas autónomas.' }
+            { question: '¿Cuál es el objetivo principal de la inteligencia artificial?', options: ['Simular la inteligencia humana.', 'Aumentar la velocidad de las computadoras.', 'Crear robots humanoides.', 'Almacenar grandes cantidades de datos.'], correctAnswer: 'Simular la inteligencia humana.' },
+            { question: '¿Qué disciplina busca simular el razonamiento humano mediante máquinas?', options: ['Inteligencia artificial.', 'Robótica.', 'Ciencia de datos.', 'Computación cuántica.'], correctAnswer: 'Inteligencia artificial.' },
+            { question: '¿Qué característica distingue a la IA de otros sistemas computacionales?', options: ['La capacidad de aprender, razonar y tomar decisiones con autonomía.', 'La rapidez de procesamiento.', 'La capacidad de almacenamiento.', 'La interfaz de usuario intuitiva.'], correctAnswer: 'La capacidad de aprender, razonar y tomar decisiones con autonomía.' },
+            { question: '¿Qué campo se considera precursor de la IA?', options: ['Lógica y filosofía.', 'La biología molecular.', 'La física teórica.', 'La economía.'], correctAnswer: 'Lógica y filosofía.' },
+            { question: '¿Qué implica el concepto de agente inteligente?', options: ['Un sistema que percibe su entorno, procesa información y actúa para alcanzar objetivos.', 'Un robot que puede hablar.', 'Un programa que puede jugar ajedrez.', 'Un sistema que solo ejecuta comandos.'], correctAnswer: 'Un sistema que percibe su entorno, procesa información y actúa para alcanzar objetivos.' },
+            { question: '¿Qué tipo de inteligencia se relaciona con la capacidad de entender y manejar emociones?', options: ['Inteligencia emocional.', 'Inteligencia lógico-matemática.', 'Inteligencia espacial.', 'Inteligencia intrapersonal.'], correctAnswer: 'Inteligencia emocional.' },
+            { question: '¿Cuál de las siguientes inteligencias se vincula con la resolución de problemas matemáticos?', options: ['Inteligencia lógico-matemática.', 'Inteligencia musical.', 'Inteligencia cinestésica.', 'Inteligencia lingüística.'], correctAnswer: 'Inteligencia lógico-matemática.' },
+            { question: '¿Qué tipo de inteligencia se asocia con la habilidad para visualizar objetos en el espacio?', options: ['Inteligencia espacial.', 'Inteligencia interpersonal.', 'Inteligencia naturalista.', 'Inteligencia kinestésica.'], correctAnswer: 'Inteligencia espacial.' },
+            { question: '¿Qué inteligencia es clave para la interacción social efectiva?', options: ['Inteligencia interpersonal.', 'Inteligencia musical.', 'Inteligencia naturalista.', 'Inteligencia intrapersonal.'], correctAnswer: 'Inteligencia interpersonal.' },
+            { question: '¿Cuál de las siguientes inteligencias es más relevante en el diseño de sistemas IA?', options: ['Inteligencia lógico-matemática.', 'Inteligencia musical.', 'Inteligencia kinestésica.', 'Inteligencia intrapersonal.'], correctAnswer: 'Inteligencia lógico-matemática.' },
+            { question: '¿Cuál de los siguientes es un fundamento clave de la IA?', options: ['La representación del conocimiento y el razonamiento.', 'La creación de robots.', 'El diseño de videojuegos.', 'La fabricación de chips de silicio.'], correctAnswer: 'La representación del conocimiento y el razonamiento.' },
+            { question: '¿Qué papel cumple el aprendizaje automático en la IA?', options: ['Permite a las máquinas aprender de los datos sin ser programadas explícitamente.', 'Se encarga de la interfaz de usuario.', 'Controla el hardware del sistema.', 'Se utiliza para la creación de bases de datos.'], correctAnswer: 'Permite a las máquinas aprender de los datos sin ser programadas explícitamente.' },
+            { question: '¿Qué tipo de datos necesita un sistema de IA para entrenarse?', options: ['Datos de entrenamiento etiquetados o sin etiquetar.', 'Solo datos de texto.', 'Datos de alta velocidad.', 'Datos en formato binario.'], correctAnswer: 'Datos de entrenamiento etiquetados o sin etiquetar.' },
+            { question: '¿Qué es un modelo en el contexto de IA?', options: ['Una representación matemática de un sistema o proceso que ha sido entrenado para una tarea específica.', 'Un conjunto de datos de prueba.', 'Un programa de computadora simple.', 'Un tipo de sensor.'], correctAnswer: 'Una representación matemática de un sistema o proceso que ha sido entrenado para una tarea específica.' },
+            { question: '¿Qué función cumple la retroalimentación en los sistemas inteligentes?', options: ['Permite al sistema corregir sus errores y mejorar su rendimiento.', 'Solo se usa para mostrar mensajes de error.', 'Permite la comunicación con el usuario.', 'No tiene un papel importante.'], correctAnswer: 'Permite al sistema corregir sus errores y mejorar su rendimiento.' },
+            { question: '¿Qué paradigma de IA se basa en reglas explícitas y lógica formal?', options: ['Paradigma simbólico.', 'Paradigma conexionista.', 'Paradigma evolutivo.', 'Paradigma híbrido.'], correctAnswer: 'Paradigma simbólico.' },
+            { question: '¿Cuál paradigma utiliza redes neuronales artificiales?', options: ['Paradigma conexionista.', 'Paradigma simbólico.', 'Paradigma evolutivo.', 'Paradigma híbrido.'], correctAnswer: 'Paradigma conexionista.' },
+            { question: '¿Qué paradigma se inspira en procesos evolutivos naturales?', options: ['Paradigma evolutivo.', 'Paradigma conexionista.', 'Paradigma simbólico.', 'Paradigma híbrido.'], correctAnswer: 'Paradigma evolutivo.' },
+            { question: '¿Qué paradigma combina lógica simbólica con aprendizaje estadístico?', options: ['Paradigma híbrido.', 'Paradigma conexionista.', 'Paradigma evolutivo.', 'Paradigma simbólico.'], correctAnswer: 'Paradigma híbrido.' },
+            { question: '¿Qué paradigma es más adecuado para tareas de reconocimiento de patrones?', options: ['Paradigma conexionista.', 'Paradigma simbólico.', 'Paradigma evolutivo.', 'Paradigma híbrido.'], correctAnswer: 'Paradigma conexionista.' },
+            { question: '¿Cuál de las siguientes es una herramienta común en IA?', options: ['Bibliotecas de aprendizaje automático como TensorFlow o PyTorch.', 'Hojas de cálculo.', 'Editores de texto.', 'Navegadores web.'], correctAnswer: 'Bibliotecas de aprendizaje automático como TensorFlow o PyTorch.' },
+            { question: '¿Qué herramienta se utiliza para construir modelos de aprendizaje profundo?', options: ['Frameworks como TensorFlow y Keras.', 'Lenguajes de programación como C++.', 'Bases de datos relacionales.', 'Sistemas operativos.'], correctAnswer: 'Frameworks como TensorFlow y Keras.' },
+            { question: '¿Qué entorno de programación es popular para IA?', options: ['Python con sus bibliotecas especializadas.', 'C++', 'Java.', 'JavaScript.'], correctAnswer: 'Python con sus bibliotecas especializadas.' },
+            { question: '¿Qué tipo de software permite la visualización de datos en IA?', options: ['Herramientas de visualización como Matplotlib y Seaborn.', 'Compiladores.', 'Sistemas operativos.', 'Editores de código.'], correctAnswer: 'Herramientas de visualización como Matplotlib y Seaborn.' },
+            { question: '¿Qué biblioteca facilita el procesamiento de lenguaje natural?', options: ['NLTK o spaCy.', 'NumPy.', 'Pandas.', 'Scikit-learn.'], correctAnswer: 'NLTK o spaCy.' },
+            { question: '¿Cuál es una tendencia actual en el desarrollo de IA?', options: ['IA en la nube y modelos como servicio.', 'IA solo para supercomputadoras.', 'Desarrollo de IA en un solo idioma.', 'Uso de hardware de baja potencia.'], correctAnswer: 'IA en la nube y modelos como servicio.' },
+            { question: '¿Qué implica el concepto de IA explicable?', options: ['La capacidad de entender por qué un modelo de IA llegó a una decisión o predicción.', 'El uso de modelos más simples.', 'El uso de modelos menos precisos.', 'La capacidad de la IA para explicar su propio código.'], correctAnswer: 'La capacidad de entender por qué un modelo de IA llegó a una decisión o predicción.' },
+            { question: '¿Qué tendencia busca reducir el sesgo en los modelos de IA?', options: ['IA ética y responsable.', 'Aumento de la velocidad de entrenamiento.', 'Uso de más datos.', 'Implementación de IA en dispositivos móviles.'], correctAnswer: 'IA ética y responsable.' },
+            { question: '¿Qué avance ha permitido el uso de IA en dispositivos móviles?', options: ['Edge computing y modelos ligeros.', 'El aumento del tamaño de los teléfonos.', 'El uso de modelos solo en la nube.', 'La reducción de la capacidad de la batería.'], correctAnswer: 'Edge computing y modelos ligeros.' },
+            { question: '¿Qué tendencia se relaciona con la ética en el desarrollo de IA?', options: ['La regulación gubernamental y los principios de diseño ético.', 'El desarrollo de nuevos algoritmos.', 'El aumento de la capacidad de almacenamiento.', 'La creación de robots.'], correctAnswer: 'La regulación gubernamental y los principios de diseño ético.' },
+            { question: '¿Qué es una búsqueda en el contexto de IA?', options: ['Un proceso para encontrar una secuencia de acciones que lleve de un estado inicial a un estado objetivo.', 'Un tipo de algoritmo de clasificación.', 'Una forma de entrenar un modelo.', 'La recolección de datos de internet.'], correctAnswer: 'Un proceso para encontrar una secuencia de acciones que lleve de un estado inicial a un estado objetivo.' },
+            { question: '¿Qué representa el espacio de estados en una búsqueda?', options: ['El conjunto de todos los posibles estados o configuraciones del problema.', 'El costo de la solución.', 'La memoria utilizada por el algoritmo.', 'El tiempo de ejecución.'], correctAnswer: 'El conjunto de todos los posibles estados o configuraciones del problema.' },
+            { question: '¿Qué significa encontrar una solución óptima?', options: ['Encontrar la mejor solución posible, generalmente la que tiene el costo más bajo o la ruta más corta.', 'Encontrar la primera solución posible.', 'Encontrar una solución que sea fácil de entender.', 'Encontrar una solución que no sea la más rápida.'], correctAnswer: 'Encontrar la mejor solución posible, generalmente la que tiene el costo más bajo o la ruta más corta.' },
+            { question: '¿Qué papel cumple el nodo en una estructura de búsqueda?', options: ['Representa un estado particular del problema.', 'Es el punto de partida de la búsqueda.', 'Es el punto final de la búsqueda.', 'Almacena el costo de la solución.'], correctAnswer: 'Representa un estado particular del problema.' },
+            { question: '¿Qué representa el costo de una solución?', options: ['La suma de los costos de las acciones que componen la solución.', 'El tiempo que toma encontrar la solución.', 'La memoria utilizada.', 'La complejidad del algoritmo.'], correctAnswer: 'La suma de los costos de las acciones que componen la solución.' },
+            { question: '¿Cuál de los siguientes es un tipo de búsqueda informada?', options: ['Búsqueda A* (A-star).', 'Búsqueda en profundidad (DFS).', 'Búsqueda en anchura (BFS).', 'Búsqueda de costo uniforme.'], correctAnswer: 'Búsqueda A* (A-star).' },
+            { question: '¿Qué tipo de búsqueda utiliza conocimiento adicional para guiar el proceso?', options: ['Búsqueda informada o heurística.', 'Búsqueda no informada.', 'Búsqueda exhaustiva.', 'Búsqueda aleatoria.'], correctAnswer: 'Búsqueda informada o heurística.' },
+            { question: '¿Qué tipo de búsqueda explora todos los caminos posibles sin información previa?', options: ['Búsqueda no informada o a ciegas.', 'Búsqueda heurística.', 'Búsqueda A*.', 'Búsqueda de ascenso de colina.'], correctAnswer: 'Búsqueda no informada o a ciegas.' },
+            { question: '¿Qué tipo de búsqueda es más eficiente en problemas complejos?', options: ['Búsqueda informada.', 'Búsqueda en anchura.', 'Búsqueda en profundidad.', 'Búsqueda de costo uniforme.'], correctAnswer: 'Búsqueda informada.' },
+            { question: '¿Qué tipo de búsqueda se basa en una función heurística?', options: ['Búsqueda informada.', 'Búsqueda no informada.', 'Búsqueda de costo uniforme.', 'Búsqueda en anchura.'], correctAnswer: 'Búsqueda informada.' }
         ];
-        
+
         let selectedQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
@@ -175,6 +247,8 @@
         let timeLeft = 30;
         let userName = null;
         let userEmail = null;
+        let isQuizActive = false;
+        let userHasTakenQuiz = false;
 
         const userInfoSection = document.getElementById('user-info');
         const quizContainer = document.getElementById('quiz-container');
@@ -187,21 +261,55 @@
         const finalEmailSpan = document.getElementById('final-email');
         const scoreSpan = document.getElementById('score');
         const downloadButton = document.getElementById('download-score');
+        
+        // Modal logic (instead of alert)
+        const createModal = (message) => {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); display: flex;
+                justify-content: center; align-items: center; z-index: 1000;
+            `;
 
-        // Función para seleccionar 10 preguntas aleatorias de la lista completa
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white; padding: 24px; border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); text-align: center;
+                max-width: 400px; width: 90%;
+            `;
+
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+            messageText.style.fontSize = '1.1rem';
+            messageText.style.marginBottom = '20px';
+
+            const closeButton = document.createElement('button');
+            closeButton.textContent = 'Aceptar';
+            closeButton.style.cssText = `
+                background-color: #3b82f6; color: white; border: none;
+                padding: 10px 20px; border-radius: 6px; cursor: pointer;
+            `;
+            closeButton.onclick = () => document.body.removeChild(modalOverlay);
+
+            modalContent.appendChild(messageText);
+            modalContent.appendChild(closeButton);
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+        };
+
         const selectRandomQuestions = () => {
             const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
             selectedQuestions = shuffled.slice(0, 10);
         };
 
-        // Función para mostrar la pregunta actual y sus opciones
         const showQuestion = () => {
+            if (!isQuizActive) return;
+
             if (currentQuestionIndex < selectedQuestions.length) {
                 const currentQuestion = selectedQuestions[currentQuestionIndex];
                 questionText.textContent = currentQuestion.question;
                 optionsContainer.innerHTML = '';
                 
-                // Mezcla las opciones para que no siempre estén en el mismo orden
                 const shuffledOptions = [...currentQuestion.options].sort(() => 0.5 - Math.random());
                 
                 shuffledOptions.forEach(option => {
@@ -218,11 +326,10 @@
             }
         };
 
-        // Maneja la respuesta del usuario
         const handleAnswer = (selectedOption, correctAnswer) => {
+            if (!isQuizActive) return;
             clearInterval(timer);
             
-            // Deshabilita todas las opciones después de la selección
             const options = optionsContainer.querySelectorAll('.option');
             options.forEach(option => {
                 option.style.pointerEvents = 'none';
@@ -240,10 +347,9 @@
             setTimeout(() => {
                 currentQuestionIndex++;
                 showQuestion();
-            }, 1500); // 1.5 segundos para ver la respuesta correcta
+            }, 1500);
         };
 
-        // Control del temporizador
         const startTimer = () => {
             timeLeft = 30;
             timerDisplay.textContent = `Tiempo restante: ${timeLeft}s`;
@@ -253,7 +359,6 @@
                 timerDisplay.textContent = `Tiempo restante: ${timeLeft}s`;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    // Si el tiempo se acaba, avanza a la siguiente pregunta
                     const options = optionsContainer.querySelectorAll('.option');
                     options.forEach(option => option.style.pointerEvents = 'none');
                     setTimeout(() => {
@@ -269,8 +374,8 @@
             startTimer();
         };
 
-        // Fin del examen, muestra los resultados y envía el correo
         const endQuiz = () => {
+            isQuizActive = false;
             quizContainer.classList.add('hidden');
             resultsContainer.classList.remove('hidden');
             
@@ -278,23 +383,18 @@
             finalEmailSpan.textContent = userEmail;
             scoreSpan.textContent = score;
 
-            // Llama a la función para enviar los resultados
             sendResultsToServer(userName, userEmail, score);
 
-            // Guarda el correo en localStorage para evitar reintentos
             localStorage.setItem(userEmail, 'completed');
         };
 
-        // Manejo del formulario de inicio
         userForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const fullName = document.getElementById('full-name').value.trim();
             const email = document.getElementById('email').value.trim();
             
-            // Valida si el usuario ya ha contestado el examen
             if (localStorage.getItem(email)) {
-                // He usado un alert, pero se recomienda usar un modal o mensaje en el UI para una mejor experiencia de usuario.
-                alert('Ya has contestado este examen. No se permiten reintentos.');
+                createModal('Ya has contestado este examen. No se permiten reintentos.');
                 return;
             }
 
@@ -303,15 +403,15 @@
             
             userInfoSection.classList.add('hidden');
             quizContainer.classList.remove('hidden');
+            isQuizActive = true;
             
             selectRandomQuestions();
             showQuestion();
         });
 
-        // Función para enviar los resultados al servidor (simulada)
-        // **IMPORTANTE**: Necesitas un servidor backend para que esto funcione
+        // Función simulada para enviar resultados
         const sendResultsToServer = async (name, email, finalScore) => {
-            const serverUrl = 'https://tu-servidor-backend.com/api/send-email'; // **REEMPLAZA ESTA URL CON LA DE TU SERVIDOR**
+            const serverUrl = 'https://tu-servidor-backend.com/api/send-email';
             const professorEmail = 'karla.ayard@universidad-une.com';
 
             try {
@@ -338,7 +438,6 @@
             }
         };
 
-        // Funcionalidad para descargar la puntuación
         downloadButton.addEventListener('click', () => {
             const textToDownload = `
 Resultados del Examen
@@ -362,3 +461,5 @@ Puntuación: ${score} / 10
     </script>
 </body>
 </html>
+
+
